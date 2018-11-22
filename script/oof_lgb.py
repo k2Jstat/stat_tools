@@ -1,12 +1,12 @@
 def oof_lgb(X,y, bt = "gbdt", itr = 500, k_fold = 3,rs = 71, lr= 0.1,vb = 100,es = 10,param = None):
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     |    input     | feature,label                                                                     |
-    |    output    | missing rate plot                                                                 |
+    |    output    | oof_preds,clf_list                                                                |
     |              |                                                                                   |
-    |    example   | check_miss(train)                                                                 |
+    |    example   | oof_lgb(train,"target")                                                           |
     |              |                                                                                   |
-    |    version   | 0.3                                                                               |
-    |    updated   | 20-11-2018                                                                        |
+    |    version   | 0.2                                                                               |
+    |    updated   | 23-11-2018                                                                        |
     |              |                                                                                   |
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     import pandas as pd
