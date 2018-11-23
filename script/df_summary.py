@@ -31,6 +31,3 @@ def df_summary(df):
     temp7 = temp5.join(temp6)
     
     return temp7
-
-
-df_summary()
