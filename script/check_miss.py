@@ -1,15 +1,15 @@
 #欠損値の先はどんな先がをチェック
 def check_miss(df,yoko = 8,tate = 5,yoko_block = 3):
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    |    input     | pandas DataFrame                                                                  |
-    |    output    | missing rate plot                                                                 |
-    |              |                                                                                   |
-    |    example   | check_miss(train)                                                                 |
-    |              |                                                                                   |
-    |    version   | 0.3                                                                               |
-    |    updated   | 20-11-2018                                                                        |
-    |              |                                                                                   |
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """
+    input   : pandas DataFrame
+    output  : missing rate plot
+
+    example : check_miss(train) 
+
+    version :  0.4
+    updated : 23-11-2018
+    """
+
     import pandas as pd
     import matplotlib.pyplot as plt
     import seaborn as sns

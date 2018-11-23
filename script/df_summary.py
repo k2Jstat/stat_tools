@@ -1,16 +1,13 @@
 def df_summary(df):
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    |    input     | pandas DataFrame                                                                  |
-    |    output    | count,unique,top,freq,mean,std,                                                   |
-    |              | percentiles = {min,5%,25%,50%,75%,95%,max},                                       |
-    |              | missing_count,all,unique_count,dtypes                                             |
-    |              |                                                                                   |
-    |    example   | df_summary(train)                                                                 |
-    |              |                                                                                   |
-    |    version   | 0.3                                                                               |
-    |    updated   | 20-11-2018                                                                        |
-    |              |                                                                                   |
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """
+    input   : pandas DataFrame
+    output  : count,unique,top,freq,mean,std,
+              percentiles = {min,5%,25%,50%,75%,95%,max}, 
+              missing_count,all,unique_count,dtypes
+
+    example : df_summary(train)
+    """
+
     import pandas as pd
 
     print("obs : " + str(df.shape[0]))
@@ -34,3 +31,6 @@ def df_summary(df):
     temp7 = temp5.join(temp6)
     
     return temp7
+
+
+df_summary()

@@ -1,17 +1,15 @@
 def oof_lgb(X,y, bt = "gbdt", itr = 500, k_fold = 3,rs = 71, lr= 0.1,vb = 100,es = 10,param = None):
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    |    input     | feature,label                                                                     |
-    |    output    | oof_preds,clf_list                                                                |
-    |              |                                                                                   |
-    |    example   | oof_lgb(train,"target")                                                           |
-    |              |                                                                                   |
-    |    version   | 0.2                                                                               |
-    |    updated   | 23-11-2018                                                                        |
-    |              |                                                                                   |
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """
+    input   : feature,label
+    output  : oof_preds,clf_list
+
+    example : oof_lgb(train,"target") 
+    """
     import pandas as pd
     import numpy as np
+    import lightgbm as lgb
     from sklearn.model_selection import StratifiedKFold
+
 
     #ターゲット変数と、除外特徴量はモデルに取り込まない
     #probabilityを付与した評価データを保存する用のデータフレーム
@@ -121,3 +119,21 @@ def multi_weighted_logloss(y_true, y_preds):
     
     loss = - np.sum(y_w) / np.sum(class_arr)
     return loss
+    
+def predict_average(X,clf_list,pred_name = "class_"):
+    """
+    input   : pandas Dataframe
+    output  : pandas Dataframe predict_value
+
+    example : predict_average(feature,clf_list)
+    """
+    for i in range(len(clf_list)):
+        if i == 0:
+            temp = clf_list[i][1].predict_proba(X)
+        else :
+            temp += clf_list[i][1].predict_proba(X)
+    temp = temp/len(clf_list)
+    temp = pd.DataFrame(temp)
+    temp.columns = [pred_name + str(i + 1) for i in temp.columns]
+    return temp
+

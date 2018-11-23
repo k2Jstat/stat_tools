@@ -1,14 +1,13 @@
 def dist_by_cat(df,category,yoko = 6,tate = 6,yoko_block = 5,plot_type = "violin"):
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    |    input     | pandas DataFrame                                                                  |
-    |    output    | None                                                                              |
-    |              |                                                                                   |
-    |    example   | dist_by_cat(train,"target")                                                       |
-    |              |                                                                                   |
-    |    version   | 0.3                                                                               |
-    |    updated   | 20-11-2018                                                                        |
-    |              |                                                                                   |
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """
+    input   : pandas DataFrame
+    output  : violin_plot 
+              box_plot
+              dist_plot
+
+    example : dist_by_cat(train,"target")  
+    """
+
     import matplotlib.pyplot as plt
     import math
     import seaborn as sns

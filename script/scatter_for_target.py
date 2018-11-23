@@ -1,14 +1,10 @@
 def scatter_for_target(df,target,hue = None,yoko = 5,tate = 6,yoko_block = 6,marker_size = 30):
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    |    input     | pandas DataFrame                                                                  |
-    |    output    | scatter plot                                                                      |
-    |              |                                                                                   |
-    |    example   | scatter_for_target(train,"target")                                                |
-    |              |                                                                                   |
-    |    version   | 0.3                                                                               |
-    |    updated   | 20-11-2018                                                                        |
-    |              |                                                                                   |
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """
+    input   : pandas DataFrame
+    output  : scatter plot
+
+    example : scatter_for_target(train,"target")
+    """
     import pandas as pd
     import numpy as np
     import matplotlib.pyplot as plt
