@@ -32,3 +32,5 @@ def check_miss(df,yoko = 8,tate = 5,yoko_block = 3):
     plt.xlim([0,1])
     sns.barplot(x="miss_rate", y="feat_name", data=temp5)
     plt.show()
+
+    return df[df.isnull().any(axis=1)]
