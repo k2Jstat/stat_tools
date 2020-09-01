@@ -1,6 +1,10 @@
 class CATDAP01:
-
+        
     def __init__(self,X_bins = 5,y_type = "class",y_bins = 5,thresholds_category_count = 50,adj = 1e-10):
+        """
+        y_type select following type ["class","numeric"]
+        
+        """
         self.X_bins = X_bins
         self.y_type = y_type
         self.y_bins = y_bins
@@ -25,6 +29,7 @@ class CATDAP01:
         # AICを計算　*******************
         for feature in tqdm(feature_list):
             #print(feature)
+                        
             #対象データの作成
             #目的変数がカテゴリの場合はそのまま使用
             if self.y_type == "class":
@@ -57,33 +62,46 @@ class CATDAP01:
             DF_miss = DF[pd.isna(DF["feature"]) == True].copy()
             DF_nmiss = DF[pd.isna(DF["feature"]) == False].copy()
 
-            #変数が時間の場合、数値に修正してやる
+            #変数が時間の場合、数値に修正する
+            #if str(DF_nmiss["feature"].dtype).find("[ns]") > -1:
+            #    DF_nmiss["feature"] = DF_nmiss["feature"].astype(int)
             if str(DF_nmiss["feature"].dtype).find("[ns]") > -1:
-                DF_nmiss["feature"] = DF_nmiss["feature"].astype(int)
+                DF_nmiss["feature"] = DF_nmiss["feature"].dt.year * 10000 + DF_nmiss["feature"].dt.month * 100 + DF_nmiss["feature"].dt.day
 
+            
             #カテゴリ変数はそのままカテゴリとして採用
             if DF_nmiss["feature"].dtype == "object":
                 if len(DF_nmiss["feature"].unique()) >= self.thresholds_category_count:
-                    DF_nmiss["category"] = "All"
+                    DF_nmiss["category"] = "Integrated"
 
                 else :
                     DF_nmiss["category"] = DF_nmiss["feature"]
 
             #数値データはビン化
             #if (DF_nmiss["feature"].dtype == "float") | (DF_nmiss["feature"].dtype == "int") :
+            
+            #elif str(DF_nmiss["feature"].dtype).find("[ns]") > -1:
+            #    try :
+            #        DF_nmiss["category"] = pd.qcut(DF_nmiss["feature"],self.X_bins,duplicates = "drop")
+
+                #基本50分割でセット。それで分割できなければもう生の値でいい
+            #    except :
+            #        if len(DF_nmiss["feature"].unique()) >= self.thresholds_category_count:
+            #            DF_nmiss["category"] = "Integrated"
+            #        else :
+            #            DF_nmiss["category"] = DF_nmiss["feature"]
+            
             else :
                 try :
                     DF_nmiss["category"] = pd.qcut(DF_nmiss["feature"],self.X_bins,duplicates = "drop")
 
-                #基本50分割でセット。それで分割できなければもう生の値でいい
+                #基本50分割でセット。それで分割できなければ生の値でいい
                 except :
                     if len(DF_nmiss["feature"].unique()) >= self.thresholds_category_count:
-                        DF_nmiss["category"] = "All"
+                        DF_nmiss["category"] = "Integrated"
                     else :
                         DF_nmiss["category"] = DF_nmiss["feature"]
 
-            #else :
-            #    print("予想外の事態")
 
                 cat_list = list(DF_nmiss["category"].unique())
                 cat_list.sort()
@@ -111,7 +129,7 @@ class CATDAP01:
             _cross = _cross.fillna(0)
 
             n_feature , n_label = _cross.shape
-            #全体件数での対数尤度。log内が0だと計算できないので0.00000000001を足してやる
+            #全体件数での対数尤度。log内が0だと計算できないので閾値を足してやる
 
             _term2 = (_cross.sum().sum()) * np.log(_cross.sum().sum() + self.adj)
 
@@ -168,22 +186,31 @@ class CATDAP01:
         self.AIC_LIST = AIC_LIST3
         self.CrossTable_dict = CROSS_DICTIONARY
 
-    def CrossTable_toExcel(self,file_name = "CrossTab_AIC.xls",path_output = "./"):
+    def CrossTable_toFile(self,file_name = "CrossTab_AIC",path_output = "./",format_ = "csv"):
         """
         input/file_name,path_output
         example/CATDAP().CrossTable_toExcel(file_name = "temp.xls",path_output = "../output/")
         """
-
+        import pandas as pd
+        
         base = pd.DataFrame()
 
         #for key in self.CrossTable_dict.keys():
         for key in self.AIC_LIST["Feature"]:
             temp = pd.DataFrame(data = self.AIC_LIST[self.AIC_LIST["Feature"] == key]["AIC"])
-            temp.index.name = ["category"]
+            temp.index.name = "category"
             temp.index = [key]
             temp = pd.concat([temp,self.CrossTable_dict[key]],sort = False)
             base = pd.concat([base,temp])
 
         base.fillna("",inplace = True)
         #吐き出し
-        base.to_excel(path_output + file_name)
+        if format_ == "csv":
+            base.to_csv(path_output + file_name + "." + format_)
+        
+        elif format_ == "xls":
+            base.to_excel(path_output + file_name + "." + format_)
+        
+
+        
+        
